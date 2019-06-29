@@ -217,15 +217,28 @@ class SnappyPdf extends BaseSnappy
      */
     private function _displayInline($source, $settingsModel, $isHtml = true)
     {
-        header('Content-Disposition: inline; filename="'.$settingsModel->filename.'"');
-        header('Content-Type: application/pdf');
+        // header('Content-Disposition: inline; filename="'.$settingsModel->filename.'"');
+        // header('Content-Type: application/pdf');
 
-        if ($isHtml) {
-            echo $this->getOutputFromHtml($source);
-        } else {
-            echo $this->getOutput($source);
-        }
+        // if ($isHtml) {
+        //     echo $this->getOutputFromHtml($source);
+        // } else {
+        //     echo $this->getOutput($source);
+        // }
 
-        exit();
+        // exit();
+
+        // TODO: figure out why the original code to display the PDF response doesn't work.
+        // The above (original) code sees an empty response being sent to the browser,
+        // possibly because we use php-fpm.
+        // The following works fine to send the PDF to the browser, however even though we've
+        // set the `mimeType` option (and if we also set the `inline` option)
+        // we end up with the wrong Content-Type header ('text/html')
+        $response = Craft::$app->getResponse();
+        $response->sendContentAsFile($this->getOutputFromHtml($source), $settingsModel->filename, [
+          'mimeType' => 'application/pdf',
+        ]);
+
+        Craft::$app->end();
     }
 }
