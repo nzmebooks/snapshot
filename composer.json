@@ -1,5 +1,5 @@
 {
-  "name": "enupal/snapshot",
+  "name": "nzmebooks/snapshot",
   "description": "PDF or Image generation from a Url or HTML page",
   "type": "craft-plugin",
   "version": "1.2.4",
